@@ -254,9 +254,9 @@ def save_to_airtable(profile, username, first_name):
             "Phone Number": profile.get("phone", "pending"),
             "Streamer Count": streamer_count,
             "Previous Platforms": profile.get("platforms", "pending"),
-            "Experience": experience,
+            "Experiance": experience,
+            "Platform": profile.get("platforms", "pending"),
             "Status": "New",
-            "Email": profile.get("email", ""),
             "Notes": f"Collected via Telegram bot on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
         }
     }
@@ -265,6 +265,8 @@ def save_to_airtable(profile, username, first_name):
     print(f"Airtable save status: {response.status_code}")
     print(f"Airtable response: {response.text}")
     return response.status_code == 200
+
+   
 
 async def send_opening_message(bot, username):
     try:
