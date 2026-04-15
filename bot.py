@@ -243,27 +243,26 @@ def save_to_airtable(profile, username, first_name):
         streamer_count = 0
 
     try:
-        experience = int(profile.get("experience", 0))
+        experience = int(float(str(profile.get("experience", 0)).replace("years", "").replace("year", "").strip()))
     except:
         experience = 0
 
-
-       data = {
-    "fields": {
-        "Agency Name": profile.get("agency_name") or first_name or username or "Unknown",
-        "Telegram Username": username or "Unknown",
-        "Region": profile.get("region", "pending"),
-        "Phone Number": str(profile.get("phone", "pending")),
-        "Streamer Count": streamer_count,
-        "Previous Platforms": profile.get("platforms", "pending"),
-        "Platform": profile.get("platforms", "pending"),
-        "Experiance": experience,
-        "Status": "New",
-        "DM Sent": True,
-        "Date Found": datetime.now().strftime("%Y-%m-%d"),
-        "Notes": f"Collected via Telegram bot on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+    data = {
+        "fields": {
+            "Agency Name": profile.get("agency_name") or first_name or username or "Unknown",
+            "Telegram Username": username or "Unknown",
+            "Region": profile.get("region", "pending"),
+            "Phone Number": str(profile.get("phone", "pending")),
+            "Streamer Count": streamer_count,
+            "Previous Platforms": profile.get("platforms", "pending"),
+            "Platform": profile.get("platforms", "pending"),
+            "Experiance": experience,
+            "DM Sent": True,
+            "Date Found": datetime.now().strftime("%Y-%m-%d"),
+            "Notes": f"Collected via Telegram bot on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+        }
     }
-}
+
     response = requests.post(url, headers=headers, json=data)
     print(f"Airtable save status: {response.status_code}")
     print(f"Airtable response: {response.text}")
