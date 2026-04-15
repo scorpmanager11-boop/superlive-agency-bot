@@ -76,8 +76,7 @@ OPENING_MESSAGES = [
     "Hey! Came across your profile and had a feeling you might be in the streaming space. SUPERLIVE is offering some amazing partnership deals right now — 60% streamer bonus and 15% agency commission. Interested in hearing more?",
     "Hi there! I work with SUPERLIVE and we're actively looking for agency partners in new markets. Our streamers earn more here than on Tango or Chamet and agencies get 15% of everything permanently. Got a minute to chat?",
     "Hey! Quick one — do you manage streamers? We're expanding SUPERLIVE into new regions and the agency deals we're offering right now are genuinely better than what most platforms give. Would love to connect!",
-    "Hi! SUPERLIVE here — we're a growing live streaming platform looking for serious agency partners. Better commissions, instant payouts, 60% welcome bonus for streamers. If you work with hosts this might be worth your time!",
-]
+    "Hi! SUPERLIVE here — we're a growing live streaming platform looking for serious agency partners. Better commissions, instant payouts, 60% welcome bonus for streamers. If you work with hosts this might be worth your time!",]
 
 SEED_USERNAMES = [
     "tangoagency",
