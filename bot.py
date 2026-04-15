@@ -106,6 +106,7 @@ SEED_USERNAMES = [
     "chametstreamer",
 ]
 
+
 def discover_usernames_from_google(query):
     found = []
     try:
@@ -125,14 +126,16 @@ def discover_usernames_from_google(query):
         print(f"Search error for {query}: {e}")
     return found
 
+
 def discover_all_new_usernames():
     all_found = set()
     for query in SEARCH_QUERIES:
         usernames = discover_usernames_from_google(query)
         all_found.update(usernames)
     new_users = all_found - contacted_users
-    print(f"Discovery complete: {len(all_found)} total found, {len(new_users)} new to contact")
+    print(f"Discovery complete: {len(all_found)} total, {len(new_users)} new")
     return list(new_users)
+
 
 def ask_claude(user_message, chat_id):
     if chat_id not in conversation_history:
@@ -150,13 +153,14 @@ YOUR COMPLETE KNOWLEDGE BASE:
 
 YOUR PERSONALITY:
 - Warm and genuine but keep it simple and natural
-- Do not overuse bhai or yaar — use them sparingly, once or twice max per conversation
-- Do not repeat commission and bonus details in every message — mention it once when relevant then move on
-- Do not appreciate or compliment every single answer — only acknowledge something genuinely impressive
-- Keep messages short — 2 sentences maximum where possible
-- Sound like a real person having a normal conversation, not a salesperson
-- Match the language of the person — if they write in Roman Hindi reply in Roman Hindi, if English then English
+- Do not overuse bhai or yaar, use them sparingly once or twice max per conversation
+- Do not repeat commission and bonus details in every message, mention it once when relevant then move on
+- Do not appreciate or compliment every single answer, only acknowledge something genuinely impressive
+- Keep messages short, 2 sentences maximum where possible
+- Sound like a real person having a normal conversation not a salesperson
+- Match the language of the person, if they write in Roman Hindi reply in Roman Hindi, if English then English
 - Never sound forced or scripted
+- You understand Hindi, Roman Hindi and Urdu fluently
 
 YOUR MISSION:
 Naturally collect this info through friendly conversation:
@@ -174,10 +178,11 @@ CONVERSATION RULES:
 - If their answer is vague ask one simple follow up
 - Do not repeat information they already gave you
 - Do not mention commission or bonus more than once in the whole conversation
-- One appreciation maximum — either mid conversation or at the end, not both
+- One appreciation maximum, either mid conversation or at the end not both
 - Keep the conversation moving, do not linger on any one topic
+- After collecting all 8 pieces of info wrap up warmly and naturally
 
-After collecting ALL 8 pieces of info say something like: This sounds like a perfect fit! I am going to pass your details to our onboarding team and someone will reach out within 24 hours to get everything set up for you.
+After collecting ALL 8 pieces of info say something like: This sounds like a perfect fit! I am going to pass your details to our onboarding team and someone will reach out within 24 hours.
 
 At the END of every reply add this hidden tag on a new line:
 [PROFILE:{{"agency_name":"null","region":"null","streamers":"null","platforms":"null","experience":"null","phone":"null","email":"null","complete":false}}]
@@ -209,6 +214,7 @@ Update values as collected. Set complete to true only when ALL 8 fields have rea
 
     return assistant_message
 
+
 def extract_profile(text):
     match = re.search(r'\[PROFILE:(.*?)\]', text, re.DOTALL)
     if match:
@@ -218,9 +224,11 @@ def extract_profile(text):
             return None
     return None
 
+
 def clean_message(text):
     cleaned = re.sub(r'\[PROFILE:.*?\]', '', text, flags=re.DOTALL)
     return cleaned.strip()
+
 
 def save_to_airtable(profile, username, first_name):
     url = f"https://api.airtable.com/v0/{AIRTABLE_BASE_ID}/Table%201"
@@ -239,27 +247,26 @@ def save_to_airtable(profile, username, first_name):
     except:
         experience = 0
 
-   data = {
-    "fields": {
-        "Agency Name": profile.get("agency_name") or first_name or username or "Unknown",
-        "Telegram Username": username or "Unknown",
-        "Region": profile.get("region", "pending"),
-        "Phone Number": str(profile.get("phone", "pending")),
-        "Streamer Count": streamer_count,
-        "Previous Platforms": profile.get("platforms", "pending"),
-        "Platform": profile.get("platforms", "pending"),
-        "Experiance": experience,
-        "Status": "New",
-        "Notes": f"Collected via Telegram bot on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+    data = {
+        "fields": {
+            "Agency Name": profile.get("agency_name") or first_name or username or "Unknown",
+            "Telegram Username": username or "Unknown",
+            "Region": profile.get("region", "pending"),
+            "Phone Number": str(profile.get("phone", "pending")),
+            "Streamer Count": streamer_count,
+            "Previous Platforms": profile.get("platforms", "pending"),
+            "Platform": profile.get("platforms", "pending"),
+            "Experiance": experience,
+            "Status": "New",
+            "Notes": f"Collected via Telegram bot on {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+        }
     }
-}
 
     response = requests.post(url, headers=headers, json=data)
     print(f"Airtable save status: {response.status_code}")
     print(f"Airtable response: {response.text}")
     return response.status_code == 200
 
-   
 
 async def send_opening_message(bot, username):
     try:
@@ -275,6 +282,7 @@ async def send_opening_message(bot, username):
         print(f"Could not reach @{username}: {e}")
         contacted_users.add(username)
         return False
+
 
 async def hunting_loop(bot):
     print("Hunter started - will hunt every 6 hours")
@@ -297,6 +305,7 @@ async def hunting_loop(bot):
         print("Sleeping 6 hours until next hunt...")
         await asyncio.sleep(6 * 60 * 60)
 
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.message.chat_id
     user_message = update.message.text
@@ -318,15 +327,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             print(f"Failed to save profile for @{username}")
 
+
 async def post_init(application: Application):
     asyncio.create_task(hunting_loop(application.bot))
     print("Hunting task started!")
+
 
 def main():
     app = Application.builder().token(TELEGRAM_TOKEN).post_init(post_init).build()
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     print("Bot is running and hunting!")
     app.run_polling()
+
 
 if __name__ == "__main__":
     main()
