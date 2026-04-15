@@ -67,7 +67,6 @@ WHY SUPERLIVE IS BETTER THAN COMPETITORS:
 - Better agency commission 15% of every streamer income permanently
 """
 
-OPENING_MESSAGES = [
     OPENING_MESSAGES = [
     "Hey! Came across your profile and honestly I think you'd love what we're building at SUPERLIVE. We offer a 60% welcome bonus and agencies earn 15% of every streamer's income permanently. Worth a quick chat?",
     "Hi! I work with SUPERLIVE — a fast growing live streaming app and we're looking for experienced agencies to partner with. Our commission structure is honestly better than Tango and Chamet. Are you currently working with streamers?",
@@ -76,7 +75,8 @@ OPENING_MESSAGES = [
     "Hey! Came across your profile and had a feeling you might be in the streaming space. SUPERLIVE is offering some amazing partnership deals right now — 60% streamer bonus and 15% agency commission. Interested in hearing more?",
     "Hi there! I work with SUPERLIVE and we're actively looking for agency partners in new markets. Our streamers earn more here than on Tango or Chamet and agencies get 15% of everything permanently. Got a minute to chat?",
     "Hey! Quick one — do you manage streamers? We're expanding SUPERLIVE into new regions and the agency deals we're offering right now are genuinely better than what most platforms give. Would love to connect!",
-    "Hi! SUPERLIVE here — we're a growing live streaming platform looking for serious agency partners. Better commissions, instant payouts, 60% welcome bonus for streamers. If you work with hosts this might be worth your time!",]
+    "Hi! SUPERLIVE here — we're a growing live streaming platform looking for serious agency partners. Better commissions, instant payouts, 60% welcome bonus for streamers. If you work with hosts this might be worth your time!", 
+]
 
 SEED_USERNAMES = [
     "tangoagency",
