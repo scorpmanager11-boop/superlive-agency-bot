@@ -4,7 +4,7 @@ import json
 import random
 import requests
 import asyncio
-from telegram import Update, Bot
+from telegram import Update
 from telegram.ext import Application, MessageHandler, filters, ContextTypes
 from datetime import datetime
 
@@ -67,28 +67,17 @@ WHY SUPERLIVE IS BETTER THAN COMPETITORS:
 - Better agency commission 15% of every streamer income permanently
 """
 
-    OPENING_MESSAGES = [
-    "Hey! Came across your profile and honestly I think you'd love what we're building at SUPERLIVE. We offer a 60% welcome bonus and agencies earn 15% of every streamer's income permanently. Worth a quick chat?",
-    "Hi! I work with SUPERLIVE — a fast growing live streaming app and we're looking for experienced agencies to partner with. Our commission structure is honestly better than Tango and Chamet. Are you currently working with streamers?",
-    "Hey there! Not sure if you've heard of SUPERLIVE but we're growing fast and our agency partners are making serious money. 15% of every streamer income, instant cashout to any bank. Thought you might be interested!",
-    "Hi! I'm reaching out because SUPERLIVE is expanding into new regions and we need strong agency partners. We offer better bonuses than most platforms out there. Do you work with streamers by any chance?",
+OPENING_MESSAGES = [
+    "Hey! Came across your profile and had a feeling you might be interested in SUPERLIVE. We have amazing bonuses which you might be interested in — 60% welcome bonus for streamers and agencies earn 15% of every streamer income permanently. Worth a chat?",
+    "Hi! I work with SUPERLIVE — a fast growing live streaming app and we are looking for experienced agencies to partner with. Our commission structure is honestly better than Tango and Chamet. Are you currently working with streamers?",
+    "Hey there! Not sure if you have heard of SUPERLIVE but we are growing fast and our agency partners are making serious money. 15% of every streamer income, instant cashout to any bank. Thought you might be interested!",
+    "Hi! I am reaching out because SUPERLIVE is expanding into new regions and we need strong agency partners. We offer better bonuses than most platforms out there. Do you work with streamers by any chance?",
     "Hey! Came across your profile and had a feeling you might be in the streaming space. SUPERLIVE is offering some amazing partnership deals right now — 60% streamer bonus and 15% agency commission. Interested in hearing more?",
-    "Hi there! I work with SUPERLIVE and we're actively looking for agency partners in new markets. Our streamers earn more here than on Tango or Chamet and agencies get 15% of everything permanently. Got a minute to chat?",
-    "Hey! Quick one — do you manage streamers? We're expanding SUPERLIVE into new regions and the agency deals we're offering right now are genuinely better than what most platforms give. Would love to connect!",
-    "Hi! SUPERLIVE here — we're a growing live streaming platform looking for serious agency partners. Better commissions, instant payouts, 60% welcome bonus for streamers. If you work with hosts this might be worth your time!", 
-]
-
-SEED_USERNAMES = [
-    "tangoagency",
-    "chametagency",
-    "livestreamagency",
-    "streamingagency",
-    "tangohost",
-    "chamethost",
-    "livehostagency",
-    "streamermanager",
-    "tangostreamer",
-    "chametstreamer",
+    "Hi there! I work with SUPERLIVE and we are actively looking for agency partners in new markets. Our streamers earn more here than on Tango or Chamet and agencies get 15% of everything permanently. Got a minute to chat?",
+    "Hey! Quick one — do you manage streamers? We are expanding SUPERLIVE into new regions and the agency deals we are offering right now are genuinely better than what most platforms give. Would love to connect!",
+    "Bhai! Tera profile dekha aur laga tu streaming world mein hai. SUPERLIVE pe agency partnership ke liye ek solid deal hai — 15% commission har streamer ki income pe permanently. Interested hai?",
+    "Yaar! SUPERLIVE ke baare mein suna hai? Hum Tango aur Chamet se better bonuses de rahe hain agencies ko. 60% welcome bonus streamers ke liye aur 15% teri pocket mein. Baat karte hain?",
+    "Bhai SUPERLIVE yahan se bol raha hoon — hum agency partners dhundh rahe hain India aur South Asia mein. Commission structure ekdum solid hai. Kya tu streamers ke saath kaam karta hai?",
 ]
 
 SEARCH_QUERIES = [
@@ -104,6 +93,19 @@ SEARCH_QUERIES = [
     "site:t.me live host agency",
 ]
 
+SEED_USERNAMES = [
+    "tangoagency",
+    "chametagency",
+    "livestreamagency",
+    "streamingagency",
+    "tangohost",
+    "chamethost",
+    "livehostagency",
+    "streamermanager",
+    "tangostreamer",
+    "chametstreamer",
+]
+
 def discover_usernames_from_google(query):
     found = []
     try:
@@ -112,27 +114,22 @@ def discover_usernames_from_google(query):
         }
         url = f"https://www.google.com/search?q={requests.utils.quote(query)}&num=20"
         response = requests.get(url, headers=headers, timeout=10)
-        
         pattern = r't\.me/([a-zA-Z0-9_]{5,32})'
         matches = re.findall(pattern, response.text)
-        
         for match in matches:
             clean = match.lower().strip()
             if clean not in ['joinchat', 'share', 'msg', 'iv'] and len(clean) >= 5:
                 found.append(clean)
-                
         print(f"Found {len(found)} usernames from: {query}")
     except Exception as e:
-        print(f"Search error for '{query}': {e}")
+        print(f"Search error for {query}: {e}")
     return found
 
 def discover_all_new_usernames():
     all_found = set()
-    
     for query in SEARCH_QUERIES:
         usernames = discover_usernames_from_google(query)
         all_found.update(usernames)
-    
     new_users = all_found - contacted_users
     print(f"Discovery complete: {len(all_found)} total found, {len(new_users)} new to contact")
     return list(new_users)
@@ -158,16 +155,16 @@ YOUR PERSONALITY:
 - Never sound scripted or robotic
 - If someone asks a question mid-conversation, answer it naturally then continue
 - Show genuine interest in their work
-- You understand Hindi, Roman Hindi (Hindi written in English letters) and Urdu
-- If someone messages in Hindi or Roman Hindi, reply in Roman Hindi naturally
-- For example if they say "haan bhai mera agency hai" reply like "arre wah bhai! 50 streamers ke saath kaam karna toh solid hai. Kaunse platform pe ho abhi?"
+- You understand Hindi, Roman Hindi which is Hindi written in English letters, and Urdu
+- If someone messages in Hindi or Roman Hindi reply in Roman Hindi naturally
+- For example if they say haan bhai mera agency hai reply like arre wah bhai! Kaunse platform pe ho abhi?
 - Mix Roman Hindi and English naturally like real people do in India and Pakistan
-- Use words like bhai, yaar, ekdum, zabardast, sahi hai, bilkul, chill when replying in Roman Hindi
+- Use words like bhai, yaar, ekdum, zabardast, sahi hai, bilkul when replying in Roman Hindi
 - If someone switches between Hindi and English mid conversation follow their style
 - Always match the language style of the person you are talking to
 
 YOUR MISSION:
-Naturally collect this info ONE piece at a time through friendly conversation:
+Naturally collect this info through friendly conversation:
 1. Confirm they manage streamers, if no wish them well and end politely
 2. Their agency name or what they call themselves
 3. Which region or country they operate in
@@ -180,9 +177,7 @@ Naturally collect this info ONE piece at a time through friendly conversation:
 CONVERSATION RULES:
 - You can combine 2 related questions naturally in one message when it makes sense
 - For example ask region AND streamer count together if the conversation flows that way
-- If their answer is vague or missing details, ask a natural follow-up before moving on
-- For example if they say "India" ask "mainly India or other countries too?"
-- If they give a number like "50 streamers" acknowledge it enthusiastically before continuing
+- If their answer is vague or missing details ask a natural follow up before moving on
 - Keep messages under 4 sentences
 - Make them feel like they are talking to a human friend not filling out a form
 - Vary your language, do not repeat the same phrases
@@ -267,6 +262,8 @@ def save_to_airtable(profile, username, first_name):
     }
 
     response = requests.post(url, headers=headers, json=data)
+    print(f"Airtable save status: {response.status_code}")
+    print(f"Airtable response: {response.text}")
     return response.status_code == 200
 
 async def send_opening_message(bot, username):
@@ -286,18 +283,15 @@ async def send_opening_message(bot, username):
 
 async def hunting_loop(bot):
     print("Hunter started - will hunt every 6 hours")
-    
     print("First hunt: using seed usernames...")
     for username in SEED_USERNAMES:
         if username not in contacted_users:
             await send_opening_message(bot, username)
             await asyncio.sleep(random.randint(30, 90))
-    
+
     while True:
         print(f"[{datetime.now().strftime('%H:%M')}] Starting discovery cycle...")
-        
         new_usernames = discover_all_new_usernames()
-        
         if new_usernames:
             print(f"Hunting {len(new_usernames)} newly discovered agencies...")
             for username in new_usernames:
@@ -305,7 +299,6 @@ async def hunting_loop(bot):
                 await asyncio.sleep(random.randint(45, 120))
         else:
             print("No new agencies found this cycle.")
-        
         print("Sleeping 6 hours until next hunt...")
         await asyncio.sleep(6 * 60 * 60)
 
@@ -324,9 +317,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if profile and profile.get("complete") == True:
         saved = save_to_airtable(profile, username, first_name)
         if saved:
-            print(f"Profile saved for @{username}")
+            print(f"Profile saved successfully for @{username}")
             if chat_id in conversation_history:
                 del conversation_history[chat_id]
+        else:
+            print(f"Failed to save profile for @{username}")
 
 async def post_init(application: Application):
     asyncio.create_task(hunting_loop(application.bot))
