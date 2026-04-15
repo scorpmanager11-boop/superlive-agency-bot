@@ -68,14 +68,15 @@ WHY SUPERLIVE IS BETTER THAN COMPETITORS:
 """
 
 OPENING_MESSAGES = [
-    "Hey! I came across your profile and honestly it caught my attention. Are you by any chance working with streamers or running an agency?",
-    "Hi there! Hope I am not interrupting anything. I work with a live streaming platform called SUPERLIVE and I am always looking to connect with people in the streaming world. Do you manage any streamers?",
-    "Hey, random message I know but I saw your profile and had a feeling you might be in the streaming space. Am I right?",
-    "Hi! I am reaching out because I am looking to connect with agency owners in the streaming industry. Is that something you are involved in?",
-    "Hey! Quick question, are you currently working with any live streamers or managing a streaming agency? I have something that might interest you.",
-    "Hello! I hope this message finds you well. I am part of the partnerships team at SUPERLIVE and I spotted your profile. Do you happen to work in the live streaming space?",
-    "Hi! Not sure if this is relevant to you but I work with streaming agencies and your profile really stood out. Do you manage streamers by any chance?",
-    "Hey there! I will be straight with you, I am looking for serious streaming agencies to partner with. Is that something you do?",
+    OPENING_MESSAGES = [
+    "Hey! Came across your profile and honestly I think you'd love what we're building at SUPERLIVE. We offer a 60% welcome bonus and agencies earn 15% of every streamer's income permanently. Worth a quick chat?",
+    "Hi! I work with SUPERLIVE — a fast growing live streaming app and we're looking for experienced agencies to partner with. Our commission structure is honestly better than Tango and Chamet. Are you currently working with streamers?",
+    "Hey there! Not sure if you've heard of SUPERLIVE but we're growing fast and our agency partners are making serious money. 15% of every streamer income, instant cashout to any bank. Thought you might be interested!",
+    "Hi! I'm reaching out because SUPERLIVE is expanding into new regions and we need strong agency partners. We offer better bonuses than most platforms out there. Do you work with streamers by any chance?",
+    "Hey! Came across your profile and had a feeling you might be in the streaming space. SUPERLIVE is offering some amazing partnership deals right now — 60% streamer bonus and 15% agency commission. Interested in hearing more?",
+    "Hi there! I work with SUPERLIVE and we're actively looking for agency partners in new markets. Our streamers earn more here than on Tango or Chamet and agencies get 15% of everything permanently. Got a minute to chat?",
+    "Hey! Quick one — do you manage streamers? We're expanding SUPERLIVE into new regions and the agency deals we're offering right now are genuinely better than what most platforms give. Would love to connect!",
+    "Hi! SUPERLIVE here — we're a growing live streaming platform looking for serious agency partners. Better commissions, instant payouts, 60% welcome bonus for streamers. If you work with hosts this might be worth your time!",
 ]
 
 SEED_USERNAMES = [
